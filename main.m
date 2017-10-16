@@ -54,7 +54,6 @@ end
  
 %% Data smoothing
 
-%TODO: Use bottomRodPos = mode(yTrack(:,2)); %most frequently used value
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
 
 %% Calculate step positions
