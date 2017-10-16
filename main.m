@@ -61,9 +61,7 @@ steps = findSteps(yTrack);
 
 %% Velocity, pressure and acceleration calculation
 [velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
-
 relPressure = relPressure(velocity,steps,bottomRodPos,dRod,sizePx);
-
 
 %% Plotting
 plotDisplacement(numFrames,yTrack,steps)
