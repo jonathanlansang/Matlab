@@ -7,4 +7,3 @@ xlabel('Frame');
 ylabel('Velocity [m/s]');
 set(findall(gca, 'Type', 'Line'),'LineWidth',2);
 end
-
