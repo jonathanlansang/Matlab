@@ -2,7 +2,6 @@
 % between two parallel discs
 % Jonathan Lansang, Marc Krueger-Sprengel 10/13/2017
 
-clc;
 clear all;
 close all;
 
@@ -25,11 +24,12 @@ minLength = 30;
 sensitivity = 20;
 initialGap = 3;
 yTrack = zeros(framesAnalyze,2);
-
+smoothVel = true;
 
 % Tracking parameters
 
 
+%Video file input
 v = 'run5_newLight_gap.mov';
 [frames,numFrames] = loadFrames(v); %loadFrames returns int8 cell array of each frame
 
@@ -53,18 +53,18 @@ yTrack(i,2) = ymax; %position of bottom rod
 end
  
 %% Data smoothing
-
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
+yTrack = removeSpikes(yTrack,tFrame);
 
 %% Calculate step positions
 steps = findSteps(yTrack);
 
 %% Velocity, pressure and acceleration calculation
-[velocity, acceleration] = velAcc(steps, sizePx, tFrame);
+[velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
 
 relPressure = relPressure(velocity,steps,bottomRodPos,dRod,sizePx);
 
 
 %% Plotting
-
 plotDisplacement(numFrames,yTrack,steps)
+plotVelocity(velocity)
