@@ -54,7 +54,7 @@ end
  
 %% Data smoothing
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
-yTrack = removeSpikes(yTrack,tFrame);
+yTrack = removeSpikes(yTrack);
 
 %% Calculate step positions
 steps = findSteps(yTrack);
@@ -68,3 +68,4 @@ relPressure = relPressure(velocity,steps,bottomRodPos,dRod,sizePx);
 %% Plotting
 plotDisplacement(numFrames,yTrack,steps)
 plotVelocity(velocity)
+plotPressure(relPressure)

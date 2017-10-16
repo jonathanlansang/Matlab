@@ -20,7 +20,7 @@ end
 %velocityOld = velocity;
 if smoothVel
     velocity = filloutliers(velocity,'linear');
-    velocity = filloutliers(velocity,'linear','movmedian',2);
+    velocity = filloutliers(velocity,'linear','movmedian',4);
 end
 
 % figure();
