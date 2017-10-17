@@ -4,7 +4,8 @@ function boundaryBoxHelper( ymin,ymax,image )
 
 figure();
 imshow(image);
-rectangle('Position',[15,ymax,373-15,ymax-ymin],'EdgeColor','r','LineWidth',1)
+box = [15,ymin,373-15,ymax-ymin];
+rectangle('Position',box,'EdgeColor','r','LineWidth',1)
 
 
 end
