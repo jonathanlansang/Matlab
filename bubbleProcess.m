@@ -3,6 +3,7 @@ function [ image_processed ] = bubbleProcess( image,ybound,dev )
 %   image = uint8 rgb image/frame to process
 %   ybound = yTracks; % position of top and bottom rod
 %   dev = pixel buffer between tracking areas
+%   RETURNS: grayscale processed image of area
 
 %% Initialization
 threshold = 155;

@@ -61,7 +61,8 @@ F = zeros(numFrames);
 for i = 1: numFrames
     image = frames{round(i)};
     bubbleImage = bubbleProcess(image,yTrack(i,:),3);
-    F(i) = %% TODO: convert gray2rgb to input into movie file
+    % TODO: convert gray2rgb to input into movie file
+    F(i) = im2frame(bubbleImage); % cannot process because bubbleImage is grayscale
 end
 movie(F)
 %% Calculate step positions
