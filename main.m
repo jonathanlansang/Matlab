@@ -56,6 +56,14 @@ end
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
 yTrack = removeSpikes(yTrack);
 
+%% Tracking Cavitations
+F = zeros(numFrames);
+for i = 1: numFrames
+    image = frames{round(i)};
+    bubbleImage = bubbleProcess(image,yTrack(i,:),3);
+    F(i) = %% TODO: convert gray2rgb to input into movie file
+end
+movie(F)
 %% Calculate step positions
 steps = findSteps(yTrack);
 
