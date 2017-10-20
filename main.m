@@ -57,14 +57,15 @@ end
 yTrack = removeSpikes(yTrack);
 
 %% Tracking Cavitations
-F = zeros(numFrames);
+threshold = 150;
+dev = 0;
 for i = 1: numFrames
-    image = frames{round(i)};
-    bubbleImage = bubbleProcess(image,yTrack(i,:),3);
-    % TODO: convert gray2rgb to input into movie file
-    F(i) = im2frame(bubbleImage); % cannot process because bubbleImage is grayscale
+    image = frames{i};
+    [bubbleImage,croppedImage] = bubbleFilter(image,yTrack(i,:),dev,threshold);
+    bubbleFrames{i} = bubbleImage;
+    croppedFrames{i} = croppedImage;
 end
-movie(F)
+
 %% Calculate step positions
 steps = findSteps(yTrack);
 
