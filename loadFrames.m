@@ -1,5 +1,5 @@
 function [frames,numFrames] = loadFrames(video)
-
+%loads individual frames into uint8 format cell
 i = 1;
 v = VideoReader(video);
 

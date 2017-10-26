@@ -38,12 +38,9 @@ v = 'run5_newLight_gap.mov';
 for i = 1:numFrames
 image = frames{round(i)};
 
-%TODO: Add preprocessing helpers (image_gauss etc.)
 image_prewittGauss = filterImage(image,sigma);
-
 [xmin,xmax,ymin,ymax] = findEdges(image_prewittGauss,minLength);
 
-%TODO: Add boxplottinghelper
 if debug==true
     boundaryBoxHelper(ymin,ymax,image) %CODE HELPER for box plotting
 end
@@ -52,19 +49,36 @@ yTrack(i,1) = ymin; %position of top rod
 yTrack(i,2) = ymax; %position of bottom rod
 end
  
+
 %% Data smoothing
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
 yTrack = removeSpikes(yTrack);
 
 %% Tracking Cavitations
+% INITIALIZATION
 threshold = 150;
-dev = 0;
+dev = 5;
+bubbleFrames = {zeros(1,numFrames)};
+rawBubbleFrames = {zeros(1,numFrames)};
+centroidLocations = {zeros(1,numFrames)};
+perimeters = {zeros(1,numFrames)};
+majorAxisLengths = {zeros(1,numFrames)};
+% PROCESSING
+
 for i = 1: numFrames
     image = frames{i};
-    [bubbleImage,croppedImage] = bubbleFilter(image,yTrack(i,:),dev,threshold);
+    [rawBubbleImage, bubbleImage] = bubbleFilter(image,yTrack(i,:),dev,threshold);
     bubbleFrames{i} = bubbleImage;
-    croppedFrames{i} = croppedImage;
+    rawBubbleFrames{i} = rawBubbleImage;
+    % TODO: find area and frequency of bubbles (POST-PROCESSING)
+    [centroid,perimeter,majorAxisLength] = bubbleProcess(bubbleImage,rawBubbleImage);
+    centroidLocations{i} = centroid;
+    perimeters{i} = perimeter;
+    majorAxisLengths{i} = majorAxisLength;
 end
+
+
+
 
 %% Calculate step positions
 steps = findSteps(yTrack);
