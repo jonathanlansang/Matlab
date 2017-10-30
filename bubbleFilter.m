@@ -1,4 +1,4 @@
-function [image_processed, image_filled] = bubbleFilter( image,ybound,dev,threshold )
+function [image_processed, image_filled] = bubbleFilter( image,ybound,xbound,dev,threshold )
 %BUBBLEFILTER Preprocessing bubble image frames
 %   image = uint8 rgb image/frame to process
 %   ybound = yTracks; % position of top and bottom rod
@@ -11,11 +11,13 @@ debug = false;
 %% Rough Area to Check for Bubbles
 ymin = min(ybound);
 ymax = max(ybound);
+xmin = min(xbound);
+xmax = max(xbound);
 
-bottomLx = 15-dev ;
+bottomLx = xmin-dev ;
 bottomLy = ymin-dev ;
 height = ymax-ymin+dev;
-width = 373-15+dev;
+width = xmax-xmin+dev;
 
 rect = [bottomLx,bottomLy,width,height];
 rough_image_cropped = rgb2gray(imcrop(image,rect));
@@ -74,6 +76,7 @@ end
 
 %% Plotting Edge Trimming Area
 if debug == true
+    figure();
     imshow(image_filled,'initialmagnification',700)
     hold on
     plot([1:xRange],topRodY,'linewidth',1.5)

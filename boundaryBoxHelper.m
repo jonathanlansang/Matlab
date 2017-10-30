@@ -1,10 +1,13 @@
-function boundaryBoxHelper( ymin,ymax,image )
+function boundaryBoxHelper( ymin,ymax,xmax,xmin,image )
 %BOUNDARYBOXHELPER Displays image with box overlay
 %   Box shows the gap in between the rods 
 
 figure();
 imshow(image);
-box = [15,ymin,373-15,ymax-ymin];
+length = xmax - xmin;
+width = ymax - ymin;
+
+box = [xmin,ymin,length,width];
 rectangle('Position',box,'EdgeColor','r','LineWidth',1)
 
 

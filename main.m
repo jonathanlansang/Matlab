@@ -7,8 +7,8 @@ close all;
 
 %% Debugging parameters
 debug=false;
-boxPlotStart = 150;
-boxPlotEnd = 180;
+boxPlotStart = 400;
+boxPlotEnd = 500;
 
 %% Initialization and Parameter input
 dRod = 0.015875;
@@ -17,23 +17,29 @@ sizePx = dRod/dRodPx;
 frameRate = 160000;
 tFrame = 1/frameRate;
 
+%Video file input
+v = 'run6_maxWeight_maxHeight_stabilized_newLever.mp4';
+[frames,numFrames] = loadFrames(v); %loadFrames returns int8 cell array of each frame
+
+% Tracking parameters
 step = 0.00; % sensitivity deviation
 sigma = 2; % magnitude of Gaussian blur
-framesAnalyze = 10;
+framesAnalyze = numFrames;
 minLength = 30;
 sensitivity = 20;
 initialGap = 3;
 yTrack = zeros(framesAnalyze,2);
+xTrack = zeros(framesAnalyze,2);
 smoothVel = true;
+hasInfoBar = true;
+acqRes = [384,128];
 
-% Tracking parameters
+%% Cropping the Information Bar
 
+if hasInfoBar == true
+    [frames] = cropInfoBar(frames,numFrames,acqRes);
+end
 
-%Video file input
-v = 'run5_newLight_gap.mov';
-[frames,numFrames] = loadFrames(v); %loadFrames returns int8 cell array of each frame
-
-     
 %% Tracking Rod
 for i = 1:numFrames
 image = frames{round(i)};
@@ -47,8 +53,13 @@ end
 
 yTrack(i,1) = ymin; %position of top rod
 yTrack(i,2) = ymax; %position of bottom rod
+xTrack(i,1) = xmin; %position of left rod
+xTrack(i,2) = xmax; %position of right rod
+
 end
- 
+
+xBound(1) = median(xTrack(:,1));
+xBound(2) = median(xTrack(:,2));
 
 %% Data smoothing
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
@@ -67,7 +78,7 @@ majorAxisLengths = {zeros(1,numFrames)};
 
 for i = 1: numFrames
     image = frames{i};
-    [rawBubbleImage, bubbleImage] = bubbleFilter(image,yTrack(i,:),dev,threshold);
+    [rawBubbleImage, bubbleImage] = bubbleFilter(image,yTrack(i,:),xBound,dev,threshold);
     bubbleFrames{i} = bubbleImage;
     rawBubbleFrames{i} = rawBubbleImage;
     % TODO: find area and frequency of bubbles (POST-PROCESSING)

@@ -10,7 +10,7 @@ plot(space,yTrack(:,2)) %position of bottom rod
 scatter(steps(:,2),steps(:,1))
 xlabel('Frame')
 ylabel('Number of Pixels')
-legend('Step Positions','Position of top rod')
+legend('Position of Top Rod','Position of Bottom Rod','Step Positions')
 hold off
 
 
