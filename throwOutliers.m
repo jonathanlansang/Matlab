@@ -5,13 +5,14 @@ function [ yTrack,bottomRodPos ] = throwOutliers( frames,yTrack,initialGap,minLe
 %   sensitivity and rerun the edgeFind
 
  dev = 3.5;
+ 
+
  for i = 2:length(yTrack)
      if yTrack(i,2) == 0 || yTrack(i,2) == yTrack(i,1)
          yTrack(i,2) = yTrack(i-1,2);
      end
  end
- 
-bottomRodPos = mode(yTrack(:,2));
+ bottomRodPos = mode(yTrack(:,2));
 
  for i = 2:300
      if abs(yTrack(i,1) - yTrack(i-1,1)) >= dev

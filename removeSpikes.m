@@ -13,6 +13,14 @@ for i = 2:length(yTrack)-5
     end
 end
 
+for i = 2:length(yTrack)-5
+    if yTrack(i,2) > yTrack(i-1,2) && mode(yTrack(i+1:i+3,2)) < yTrack(i,2)
+        yTrack(i,1) = yTrack(i-1,1);
+    elseif yTrack(i,2) < yTrack(i-1,2) && mean(yTrack(i+1:i+4,2)) > yTrack(i,2)
+        yTrack(i,2) = yTrack(i-1,2);
+    end
+end
+
 % figure()
 % hold on
 % plot(yTrack(:,1))
