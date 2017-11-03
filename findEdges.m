@@ -1,4 +1,6 @@
 function [xmin,xmax,ymin,ymax] = findEdges(image,minLength)
+%% FUNCTION FINDS EDGES USING HOUGH TRANSFORMATIONS
+%   image: BW preprocessed image
 
 %% Initialization
 xbound = 0;

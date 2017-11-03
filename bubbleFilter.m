@@ -20,7 +20,7 @@ height = ymax-ymin+dev;
 width = xmax-xmin+dev;
 
 rect = [bottomLx,bottomLy,width,height];
-rough_image_cropped = rgb2gray(imcrop(image,rect));
+rough_image_cropped = (imcrop(image,rect));
 
 %% Filtering Cropped Images
 image_processed = (rough_image_cropped<threshold);
