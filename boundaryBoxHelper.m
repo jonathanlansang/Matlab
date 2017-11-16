@@ -1,4 +1,4 @@
-function [frames_box] = boundaryBoxHelper(yBound,xBound,frames,boxPlotStart,boxPlotEnd)
+function [frames_box] = boundaryBoxHelper(yBound,xBound,frames,boxPlotStart,boxPlotEnd,fps,playMovie)
 %BOUNDARYBOXHELPER Displays image with box overlay
 %   Box shows the gap in between the rods 
 
@@ -15,10 +15,10 @@ for i = 1:numFrames
     height = ymax - ymin;
 
     rect = [xmin,ymin,width,height];
-    %rectangle('Position',box,'EdgeColor','r','LineWidth',1)
-    frames_box{i} = insertShape(frames{i},'Rectangle',rect,'Linewidth',1);
-    F(i) = im2frame(frames_box{i});
+    frames_box{i} = insertShape(frames{i},'Rectangle',rect);
+    F(i) = im2frame(imresize(frames_box{i},2.8));
 end
 
-movie(F,[1,boxPlotStart:boxPlotEnd],40);
-
+if playMovie
+    movie(F,[1,boxPlotStart:boxPlotEnd],fps);
+end

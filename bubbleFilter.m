@@ -26,8 +26,10 @@ rough_image_cropped = (imcrop(image,rect));
 image_processed = (rough_image_cropped<threshold);
 
 % Fills in 'holes' in bubble clouds
-image_filled1 = regionprops(image_processed, 'FilledImage');
-image_filled = image_filled1(1).FilledImage(:,:);
+% image_filled1 = regionprops(image_processed, 'FilledImage');
+% image_filled = image_filled1(1).FilledImage(:,:);
+image_filled = imfill(image_processed,'holes');
+
 
 %% Find Precise Top/Bottom Edges
 range = size(image_filled);
@@ -67,10 +69,10 @@ end
 image_filled = im2double(image_filled);
 for i = 1:xRange
     for j = 1 : topRodY(i)
-        image_filled(j,i) = false;
+        image_filled(j,i) = 0;
     end
     for k = 1 : bottomRodY(i)
-        image_filled(yRange-k+1,i) = false;
+        image_filled(yRange-k+1,i) = 0;
     end
 end
 

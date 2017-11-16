@@ -5,10 +5,15 @@
 clear all;
 close all;
 
+%% Video file input
+v = 'run10_noWeight_maxHeight_stabilized_newLever.mp4';
+[frames,numFrames] = loadFrames(v); %loadFrames returns int8 cell array of each frame
+
 %% Debugging parameters
-debug=false;
+debug=true;
 boxPlotStart = 1;
-boxPlotEnd = 1000;
+boxPlotEnd = 200;
+fps = 50;
 
 %% Initialization and Parameter input
 dRod = 0.015875;
@@ -17,9 +22,6 @@ sizePx = dRod/dRodPx;
 frameRate = 160000;
 tFrame = 1/frameRate;
 
-%Video file input
-v = 'run6_maxWeight_maxHeight_stabilized_newLever.mp4';
-[frames,numFrames] = loadFrames(v); %loadFrames returns int8 cell array of each frame
 
 % Tracking parameters
 step = 0.00; % sensitivity deviation
@@ -66,7 +68,9 @@ xBound(2) = mode(xMax);
 %% Displaying Boundary Box
 if debug==true
     %CODE HELPER for box plotting
-    [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd); 
+    [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd,fps); 
+    %frames_box: cell that contains individual frames with boundary box
+    %superimposed 
 end
 %% Data smoothing
 [yTrack,bottomRodPos] = throwOutliers(frames,yTrack,initialGap,minLength,sensitivity,sigma);
