@@ -5,7 +5,7 @@ function plotDisplacement( numFrames,yTrack,steps )
 figure();
 space = linspace(1,numFrames,length(yTrack));
 hold on
-plot(space,yTrack(:,1))
+plot(space,yTrack(:,1)) %position of top rod
 plot(space,yTrack(:,2)) %position of bottom rod
 scatter(steps(:,2),steps(:,1))
 xlabel('Frame')

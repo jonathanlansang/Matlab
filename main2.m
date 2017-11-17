@@ -13,7 +13,7 @@ boxPlotEnd = 250;
 fps = 60;
 
 %% Initialize Video
-v = 'run5_newLight_gap.mov';
+v = uigetdir;
  %loadFrames returns uint8 cell array of each frame
 [frames,numFrames] = loadFrames(v);
 
@@ -30,18 +30,20 @@ sensitivity = 25;
 yTrack = zeros(numFrames,2);
 xTrack = zeros(numFrames,2);
 checkArea = {zeros(1,numFrames)};
+
 %% Pre-processing parameters 
 smoothVel = true;
-hasInfoBar = false;
+hasInfoBar = true;
 acqRes = [384,128];
+hasBubbles = false;
 
 %% Cropping Information Bar
 if hasInfoBar == true
     [frames] = cropInfoBar(frames,numFrames,acqRes);
 end
 
-tic
 %% Tracking Rod
+tic
 for i = 1:numFrames
     
 image = frames{i};
@@ -84,6 +86,7 @@ if debug==true
 end
 
 %% Tracking Cavitations
+if hasBubbles == true
 tic
 % INITIALIZATION
 threshold = 150;
@@ -118,8 +121,9 @@ for i = 1 : numFrames
         k = k + 1;
     end
 end
-
+timeBetweenBubbles = diff(framesWithBubble);
 toc
+end
 %% Calculate step positions
 steps = findSteps(yTrack);
 
