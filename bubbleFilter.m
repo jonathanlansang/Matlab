@@ -19,17 +19,13 @@ bottomLy = ymin-dev ;
 height = ymax-ymin+dev;
 width = xmax-xmin+dev;
 
+image = rgb2gray(image);
 rect = [bottomLx,bottomLy,width,height];
 rough_image_cropped = (imcrop(image,rect));
 
 %% Filtering Cropped Images
 image_processed = (rough_image_cropped<threshold);
-
-% Fills in 'holes' in bubble clouds
-% image_filled1 = regionprops(image_processed, 'FilledImage');
-% image_filled = image_filled1(1).FilledImage(:,:);
 image_filled = imfill(image_processed,'holes');
-
 
 %% Find Precise Top/Bottom Edges
 range = size(image_filled);
@@ -59,27 +55,23 @@ for i = 2:xRange
     end
 end
 
-% topBound = median(topRodY);
-% bottomBound = median(bottomRodY);
-% image_cropped = imcrop(image,[bottomLx,bottomLy+bottomBound,width,height-topBound]);
-
 %% Filtering Cropped Images
 % THIS SECTION REMOVES THE RODS AND DISPLAYS ONLY THE REMAINING CENTROIDS
 
-image_filled = im2double(image_filled);
+image_filled = (image_filled);
 for i = 1:xRange
     for j = 1 : topRodY(i)
-        image_filled(j,i) = 0;
+        image_filled(j,i) = false;
     end
     for k = 1 : bottomRodY(i)
-        image_filled(yRange-k+1,i) = 0;
+        image_filled(yRange-k+1,i) = false;
     end
 end
 
 %% Plotting Edge Trimming Area
 if debug == true
     figure();
-    imshow(image_filled,'initialmagnification',700)
+    imshow(double(image_filled),'initialmagnification',700)
     hold on
     plot([1:xRange],topRodY,'linewidth',1.5)
     plot([1:xRange],yRange-bottomRodY+1,'linewidth',1.5)

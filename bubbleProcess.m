@@ -8,7 +8,7 @@ debug = false;
 
 %% Find Centroids 
 boundary = bwperim(bubbleImage);
-s = regionprops(boundary, 'Centroid','MajorAxisLength','Perimeter');
+s = regionprops(boundary, 'Centroid','Perimeter','MajorAxisLength');
 
 %% Return Outputs
 if isfield(s,'Centroid')
@@ -35,6 +35,4 @@ if debug == true
     plot(centroids(:,1),centroids(:,2), 'r*')
     hold off
 end
-
 end
-

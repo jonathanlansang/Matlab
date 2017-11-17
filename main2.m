@@ -106,6 +106,19 @@ for i = 1: numFrames
     perimeters{i} = perimeter;
     majorAxisLengths{i} = majorAxisLength;
 end
+
+% POST-PROCESSING
+totalBubbleFrames = 0;
+framesWithBubble = 1;
+k = 2;
+for i = 1 : numFrames
+    if ~isempty(perimeters{i})
+        totalBubbleFrames = totalBubbleFrames + 1;
+        framesWithBubble(k) = i;
+        k = k + 1;
+    end
+end
+
 toc
 %% Calculate step positions
 steps = findSteps(yTrack);
