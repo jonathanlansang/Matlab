@@ -4,12 +4,13 @@
 
 clear all;
 close all;
+warning off;
 
 %% Debugging parameters
 debug=false;
-playMovie = false;
-boxPlotStart = 63;
-boxPlotEnd = 250;
+playMovie = true;
+boxPlotStart = 1;
+boxPlotEnd = 150;
 fps = 60;
 
 %% Initialize Video
@@ -33,9 +34,9 @@ checkArea = {zeros(1,numFrames)};
 
 %% Pre-processing parameters 
 smoothVel = true;
-hasInfoBar = true;
+hasInfoBar = false;
 acqRes = [384,128];
-hasBubbles = false;
+hasBubbles = true;
 
 %% Cropping Information Bar
 if hasInfoBar == true
@@ -78,6 +79,24 @@ rawY = yTrack;
 yTrack = removeSpikes(yTrack);
 yTrack = smoothY(yTrack);
 
+%% Calculate step positions
+steps = findSteps(yTrack);
+
+%% Initial Gap Reprocessing
+threshold = getColorValue(frames{floor(numFrames-1)});
+
+firstMove = steps(1,1);
+topRodStart = mean(yTrack(1:firstMove,1));
+bottomRodStart = mean(yTrack(1:firstMove),2);
+
+if abs(topRodStart-bottomRodStart)<1
+    for i = 1:steps(1,1)
+        [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
+    end
+end
+
+yTrack(1:steps(1,2),1) = median(topRodStart);
+
 %% Displaying Boundary Box
 if debug==true
     [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd,fps,playMovie); 
@@ -89,7 +108,6 @@ end
 if hasBubbles == true
 tic
 % INITIALIZATION
-threshold = 150;
 dev = 5;
 bubbleFrames = {zeros(1,numFrames)};
 rawBubbleFrames = {zeros(1,numFrames)};
@@ -124,8 +142,6 @@ end
 timeBetweenBubbles = diff(framesWithBubble);
 toc
 end
-%% Calculate step positions
-steps = findSteps(yTrack);
 
 %% Velocity, pressure and acceleration calculation
 [velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
