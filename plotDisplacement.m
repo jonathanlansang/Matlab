@@ -1,13 +1,13 @@
-function plotDisplacement(numFrames, yTrack, steps)
+function plotDisplacement(numFrames, yTrack, steps, overlap, order)
 %PLOTDISPLACEMENT plot position of top and bottom rod as well as steps of
 %the top rod
 %   Detailed explanation goes here
 figure();
 space = 1:numFrames;
-space2 = steps(1,2)-20:numFrames;
-p1 = polyfit(transpose(space),yTrack(:,1),6);
+space2 = steps(1,2)-overlap:numFrames;
+p1 = polyfit(transpose(space),yTrack(:,1),order);
 y1 = polyval(p1,space);
-p2 = polyfit(transpose(space2),yTrack(steps(1,2)-20:end,1),6);
+p2 = polyfit(transpose(space2),yTrack(steps(1,2)-overlap:end,1),order);
 y2 = polyval(p2,space2);
 % bSplineKnots = spmak(steps(:,2),steps(:,1));
 % spaceB = linspace(space2(1),length(space2)+space2(1),length(bSplineKnots.knots));
@@ -22,8 +22,8 @@ plot(space2,y2)
 xlabel('Frame')
 ylabel('Number of Pixels')
 legend('Position of Top Rod','Position of Bottom Rod','Step Positions',...
-    '6-Degree Polynomial Fit (Start Position)',...
-    '6-Degree Polynomial Fit (First Step Start)')
+    [num2str(order) '-Degree Polynomial Fit (Start Position)'],...
+    [num2str(order) '-Degree Polynomial Fit (First Step Start)'])
 hold off
 
 %syms x

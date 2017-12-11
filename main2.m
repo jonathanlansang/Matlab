@@ -145,18 +145,19 @@ toc
 end
 
 %% Velocity, pressure and acceleration calculation
-interpolationOverlap = 20;
+interpolationOverlap = 100;
+polyFitOrder = 20;
 
 [velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
 
-displacementPoly = dispPolyFit(yTrack, steps, numFrames, interpolationOverlap);
-[velocityPoly, accelerationPoly] = velAccPolyFit(yTrack, steps, sizePx, tFrame, numFrames, interpolationOverlap);
+displacementPoly = dispPolyFit(yTrack, steps, numFrames, interpolationOverlap, polyFitOrder);
+[velocityPoly, accelerationPoly] = velAccPolyFit(yTrack, steps, sizePx, tFrame, numFrames, interpolationOverlap, polyFitOrder);
 
 relPressureLeider = relPressureLeider(velocity, steps, bottomRodPos, dRod, sizePx);
 relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, accelerationPoly, bottomRodPos, dRod, sizePx);
 
 %% Plotting
-plotDisplacement(numFrames,yTrack,steps)
-plotVelocity(velocity, velocityPoly, steps)
-plotAcceleration(acceleration, accelerationPoly, steps)
-plotPressure(relPressureLeider, relPressureKuzma, steps)
+plotDisplacement(numFrames,yTrack,steps,interpolationOverlap, polyFitOrder)
+plotVelocity(velocity, velocityPoly, steps, interpolationOverlap)
+plotAcceleration(acceleration, accelerationPoly, steps, interpolationOverlap)
+plotPressure(relPressureLeider, relPressureKuzma, steps, interpolationOverlap)
