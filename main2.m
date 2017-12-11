@@ -14,7 +14,8 @@ boxPlotEnd = 150;
 fps = 60;
 
 %% Initialize Video
-v = uigetdir;
+%v = uigetdir;
+v = 'run5_newLight_gap.mov';
  %loadFrames returns uint8 cell array of each frame
 [frames,numFrames] = loadFrames(v);
 
@@ -144,10 +145,18 @@ toc
 end
 
 %% Velocity, pressure and acceleration calculation
+interpolationOverlap = 20;
+
 [velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
-relPressure = relPressure(velocity,steps,bottomRodPos,dRod,sizePx);
+
+displacementPoly = dispPolyFit(yTrack, steps, numFrames, interpolationOverlap);
+[velocityPoly, accelerationPoly] = velAccPolyFit(yTrack, steps, sizePx, tFrame, numFrames, interpolationOverlap);
+
+relPressureLeider = relPressureLeider(velocity, steps, bottomRodPos, dRod, sizePx);
+relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, accelerationPoly, bottomRodPos, dRod, sizePx);
 
 %% Plotting
 plotDisplacement(numFrames,yTrack,steps)
-plotVelocity(velocity)
-plotPressure(relPressure)
+plotVelocity(velocity, velocityPoly, steps)
+plotAcceleration(acceleration, accelerationPoly, steps)
+plotPressure(relPressureLeider, relPressureKuzma, steps)

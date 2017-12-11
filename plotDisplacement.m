@@ -1,4 +1,4 @@
-function velocity = plotDisplacement( numFrames,yTrack,steps )
+function velocity = plotDisplacement(numFrames, yTrack, steps)
 %PLOTDISPLACEMENT plot position of top and bottom rod as well as steps of
 %the top rod
 %   Detailed explanation goes here
