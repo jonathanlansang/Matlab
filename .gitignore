@@ -1,3 +1,6 @@
 # videos
 *.mov
 *.mp4
+
+# Temp Files
+*.m~

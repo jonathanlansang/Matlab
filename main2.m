@@ -86,17 +86,17 @@ steps = findSteps(yTrack);
 %% Initial Gap Reprocessing
 threshold = getColorValue(frames{floor(numFrames-1)});
 
-firstMove = steps(1,1);
-topRodStart = mean(yTrack(1:firstMove,1));
-bottomRodStart = mean(yTrack(1:firstMove),2);
-
-if abs(topRodStart-bottomRodStart)<1
-    for i = 1:steps(1,1)
-        [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
-    end
-end
-
-yTrack(1:steps(1,2),1) = median(topRodStart);
+% firstMove = steps(1,1);
+% topRodStart = mean(yTrack(1:firstMove,1));
+% bottomRodStart = mean(yTrack(1:firstMove),2);
+% 
+% if abs(topRodStart-bottomRodStart)<1
+%     for i = 1:steps(1,1)
+%         [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
+%     end
+% end
+% 
+% yTrack(1:steps(1,2),1) = median(topRodStart);
 
 %% Displaying Boundary Box
 if debug==true
@@ -145,19 +145,19 @@ toc
 end
 
 %% Velocity, pressure and acceleration calculation
-interpolationOverlap = 100;
-polyFitOrder = 20;
+interpolationOverlap = 90;
+polyFitOrder = 35;
 
 [velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
 
 displacementPoly = dispPolyFit(yTrack, steps, numFrames, interpolationOverlap, polyFitOrder);
 [velocityPoly, accelerationPoly] = velAccPolyFit(yTrack, steps, sizePx, tFrame, numFrames, interpolationOverlap, polyFitOrder);
 
-relPressureLeider = relPressureLeider(velocity, steps, bottomRodPos, dRod, sizePx);
+[relPressureLeider, relPressureLeiderPolyFit] = relPressureLeider(velocity, steps, velocityPoly, displacementPoly, bottomRodPos, dRod, sizePx);
 relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, accelerationPoly, bottomRodPos, dRod, sizePx);
 
 %% Plotting
 plotDisplacement(numFrames,yTrack,steps,interpolationOverlap, polyFitOrder)
 plotVelocity(velocity, velocityPoly, steps, interpolationOverlap)
 plotAcceleration(acceleration, accelerationPoly, steps, interpolationOverlap)
-plotPressure(relPressureLeider, relPressureKuzma, steps, interpolationOverlap)
+plotPressure(relPressureLeider, relPressureLeiderPolyFit, relPressureKuzma, steps, interpolationOverlap)

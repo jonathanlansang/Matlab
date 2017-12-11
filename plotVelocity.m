@@ -7,9 +7,9 @@ endPolyPlot = length(velocityPoly)-overlap/2;
 figure();
 hold on
 
-plot(velocity(:,2),velocity(:,1));
-scatter(velocity(:,2),velocity(:,1));
-plot(velocityPoly(startPolyPlot:endPolyPlot,1),velocityPoly(startPolyPlot:endPolyPlot,2));
+plot(velocity(:,2),velocity(:,1), 'LineWidth', 2);
+scatter(velocity(:,2),velocity(:,1), 'LineWidth', 2);
+plot(velocityPoly(startPolyPlot:endPolyPlot,1),velocityPoly(startPolyPlot:endPolyPlot,2), 'LineWidth', 2);
 
 xlabel('Frame');
 ylabel('Velocity [m/s]');

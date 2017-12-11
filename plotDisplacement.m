@@ -13,11 +13,11 @@ y2 = polyval(p2,space2);
 % spaceB = linspace(space2(1),length(space2)+space2(1),length(bSplineKnots.knots));
 
 hold on
-plot(space,yTrack(:,1)) %position of top rod
-plot(space,yTrack(:,2)) %position of bottom rod
-scatter(steps(:,2),steps(:,1))
-plot(space,y1)
-plot(space2,y2)
+plot(space,yTrack(:,1), 'LineWidth', 2) %position of top rod
+plot(space,yTrack(:,2), 'LineWidth', 2) %position of bottom rod
+scatter(steps(:,2),steps(:,1), 'LineWidth', 2)
+plot(space,y1, 'LineWidth', 2)
+plot(space2,y2, 'LineWidth', 2)
 % plot(spaceB,-bSplineKnots.knots+yTrack(1,1)+bSplineKnots.knots(1))
 xlabel('Frame')
 ylabel('Number of Pixels')

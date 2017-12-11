@@ -6,9 +6,9 @@ endPolyPlot = length(accelerationPoly)-overlap/2;
 
 figure();
 hold on
-plot(acceleration(:,2),acceleration(:,1));
-scatter(acceleration(:,2),acceleration(:,1));
-plot(accelerationPoly(startPolyPlot:endPolyPlot,1),accelerationPoly(startPolyPlot:endPolyPlot,2));
+plot(acceleration(:,2),acceleration(:,1), 'LineWidth', 2);
+scatter(acceleration(:,2),acceleration(:,1), 'LineWidth', 2);
+plot(accelerationPoly(startPolyPlot:endPolyPlot,1),accelerationPoly(startPolyPlot:endPolyPlot,2), 'LineWidth', 2);
 
 
 xlabel('Frame');
