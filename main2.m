@@ -7,10 +7,10 @@ close all;
 warning off;
 
 %% Debugging parameters
-debug=false;
+debug=true;
 playMovie = true;
-boxPlotStart = 1;
-boxPlotEnd = 150;
+boxPlotStart = 220;
+boxPlotEnd = 221;
 fps = 60;
 
 %% Initialize Video
@@ -25,6 +25,8 @@ dRodPx = 358;
 sizePx = dRod/dRodPx;
 frameRate = 160000;
 tFrame = 1/frameRate;
+density = 1000; %[kg/m^3]
+viscosity = 8.9e-4; %[Pa s] for const. visc. water
 
 %% Tracking parameters
 minLength = 5;
@@ -153,11 +155,14 @@ polyFitOrder = 35;
 displacementPoly = dispPolyFit(yTrack, steps, numFrames, interpolationOverlap, polyFitOrder);
 [velocityPoly, accelerationPoly] = velAccPolyFit(yTrack, steps, sizePx, tFrame, numFrames, interpolationOverlap, polyFitOrder);
 
-[relPressureLeider, relPressureLeiderPolyFit] = relPressureLeider(velocity, steps, velocityPoly, displacementPoly, bottomRodPos, dRod, sizePx);
-relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, accelerationPoly, bottomRodPos, dRod, sizePx);
+[relPressureLeider, relPressureLeiderPolyFit] = relPressureLeider(velocity, steps, velocityPoly, displacementPoly, bottomRodPos, dRod, sizePx, viscosity);
+relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, accelerationPoly, bottomRodPos, dRod, sizePx, density, viscosity);
 
+reynoldsNumber = reynoldsNumber(displacementPoly, velocityPoly, density, viscosity, sizePx, bottomRodPos);
 %% Plotting
-plotDisplacement(numFrames,yTrack,steps,interpolationOverlap, polyFitOrder)
-plotVelocity(velocity, velocityPoly, steps, interpolationOverlap)
-plotAcceleration(acceleration, accelerationPoly, steps, interpolationOverlap)
-plotPressure(relPressureLeider, relPressureLeiderPolyFit, relPressureKuzma, steps, interpolationOverlap)
+% plotDisplacement(numFrames,yTrack,steps,interpolationOverlap, polyFitOrder)
+% plotVelocity(velocity, velocityPoly, steps, interpolationOverlap)
+% plotAcceleration(acceleration, accelerationPoly, steps, interpolationOverlap)
+% plotPressure(relPressureLeider, relPressureLeiderPolyFit, relPressureKuzma, steps, interpolationOverlap)
+
+plotCombined(numFrames, yTrack, steps, velocityPoly, accelerationPoly, reynoldsNumber, relPressureLeiderPolyFit, relPressureKuzma, interpolationOverlap, polyFitOrder);

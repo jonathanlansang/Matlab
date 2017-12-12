@@ -1,11 +1,11 @@
-function [dp, dpPolyFit] = relPressureLeider(velocity, steps, velocityFit, displacementFit, botRodPos, rodDiameter, sizePx)
+function [dp, dpPolyFit] = relPressureLeider(velocity, steps, velocityFit, displacementFit, botRodPos, rodDiameter, sizePx, viscosity)
 %RELPRESSURE returns relative pressure for given velocity, rodDistance and
 %rodDiameter
 %   Adjust values for viscosity, non-newtonian fluids etc,
 
 %% Constants
 n = 1; % unitless constant, 1 for Newtonian
-m = 10^-3; % viscosity [kg/ms] for Newtonian
+m = viscosity; % viscosity [kg/ms] for Newtonian
 R = rodDiameter/2; % radius of rod/plate [m]
 r = 0; % 0 to R
 dp = zeros(length(velocity),2);

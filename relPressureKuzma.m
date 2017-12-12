@@ -1,11 +1,11 @@
-function [dp] = relPressureKuzma(displacement, velocity, acceleration, botRodPos, rodDiameter, sizePx)
+function [dp] = relPressureKuzma(displacement, velocity, acceleration, botRodPos, rodDiameter, sizePx, density, viscosity)
 %RELPRESSUREKUZMA returns relative pressure according to Kuzma for given velocity, rodDistance and
 %rodDiameter. Adjust values for viscosity, non-newtonian fluids etc,
 
 %% Constants
 %n = 1; % unitless constant, 1 for Newtonian
-mu = 10^-3; % viscosity [kg/ms] for Newtonian
-rho = 1000; % density [kg/m^3] of Water
+mu = viscosity; % viscosity [kg/ms] for Newtonian
+rho = density;
 R = rodDiameter/2; % radius of rod/plate [m]
 r = 0; % 0 to R
 dp = zeros(length(displacement),2);
