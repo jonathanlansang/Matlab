@@ -7,14 +7,23 @@ close all;
 warning off;
 
 %% Debugging parameters
-debug=false;
+debug=true;
 playMovie = true;
+<<<<<<< HEAD
 boxPlotStart = 200;
 boxPlotEnd = 275;
+=======
+boxPlotStart = 220;
+boxPlotEnd = 221;
+>>>>>>> 580dad127f50a3ed62a0563603f7ab95156fdc16
 fps = 60;
 
 %% Initialize Video
 %v = uigetdir;
+<<<<<<< HEAD
+=======
+v = 'run5_newLight_gap.mov';
+>>>>>>> 580dad127f50a3ed62a0563603f7ab95156fdc16
  %loadFrames returns uint8 cell array of each frame
 v = 'run5_newLight_gap.mov';
 [frames,numFrames] = loadFrames(v);
@@ -25,6 +34,8 @@ dRodPx = 358;
 sizePx = dRod/dRodPx;
 frameRate = 160000;
 tFrame = 1/frameRate;
+density = 1000; %[kg/m^3]
+viscosity = 8.9e-4; %[Pa s] for const. visc. water
 
 %% Tracking parameters
 minLength = 5;
@@ -92,6 +103,7 @@ bottomRod = mean(yTrack(1:steps(1,2),2));
 
 if abs(topRod-bottomRod)<1
 
+<<<<<<< HEAD
 firstMove = steps(1,1);
 topRodStart = mean(yTrack(1:firstMove,1));
 bottomRodStart = mean(yTrack(1:firstMove),2);
@@ -104,6 +116,20 @@ end
 
 yTrack(1:steps(1,2),1) = median(topRodStart);
 end
+=======
+% firstMove = steps(1,1);
+% topRodStart = mean(yTrack(1:firstMove,1));
+% bottomRodStart = mean(yTrack(1:firstMove),2);
+% 
+% if abs(topRodStart-bottomRodStart)<1
+%     for i = 1:steps(1,1)
+%         [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
+%     end
+% end
+% 
+% yTrack(1:steps(1,2),1) = median(topRodStart);
+
+>>>>>>> 580dad127f50a3ed62a0563603f7ab95156fdc16
 %% Displaying Boundary Box
 if debug==true
     [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd,fps,playMovie); 
@@ -151,10 +177,22 @@ toc
 end
 
 %% Velocity, pressure and acceleration calculation
-[velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
-relPressure = relPressure(velocity,steps,bottomRodPos,dRod,sizePx);
+interpolationOverlap = 90;
+polyFitOrder = 35;
 
+[velocity, acceleration] = velAcc(steps, sizePx, tFrame, smoothVel);
+
+displacementPoly = dispPolyFit(yTrack, steps, numFrames, interpolationOverlap, polyFitOrder);
+[velocityPoly, accelerationPoly] = velAccPolyFit(yTrack, steps, sizePx, tFrame, numFrames, interpolationOverlap, polyFitOrder);
+
+[relPressureLeider, relPressureLeiderPolyFit] = relPressureLeider(velocity, steps, velocityPoly, displacementPoly, bottomRodPos, dRod, sizePx, viscosity);
+relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, accelerationPoly, bottomRodPos, dRod, sizePx, density, viscosity);
+
+reynoldsNumber = reynoldsNumber(displacementPoly, velocityPoly, density, viscosity, sizePx, bottomRodPos);
 %% Plotting
-plotDisplacement(numFrames,yTrack,steps)
-plotVelocity(velocity)
-plotPressure(relPressure)
+% plotDisplacement(numFrames,yTrack,steps,interpolationOverlap, polyFitOrder)
+% plotVelocity(velocity, velocityPoly, steps, interpolationOverlap)
+% plotAcceleration(acceleration, accelerationPoly, steps, interpolationOverlap)
+% plotPressure(relPressureLeider, relPressureLeiderPolyFit, relPressureKuzma, steps, interpolationOverlap)
+
+plotCombined(numFrames, yTrack, steps, velocityPoly, accelerationPoly, reynoldsNumber, relPressureLeiderPolyFit, relPressureKuzma, interpolationOverlap, polyFitOrder);
