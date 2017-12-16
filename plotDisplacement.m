@@ -1,4 +1,4 @@
-function velocity = plotDisplacement( numFrames,yTrack,steps )
+function plotDisplacement( numFrames,yTrack,steps )
 %PLOTDISPLACEMENT plot position of top and bottom rod as well as steps of
 %the top rod
 %   Detailed explanation goes here
@@ -21,14 +21,8 @@ plot(space2,y2)
 % plot(spaceB,-bSplineKnots.knots+yTrack(1,1)+bSplineKnots.knots(1))
 xlabel('Frame')
 ylabel('Number of Pixels')
-legend('Position of Top Rod','Position of Bottom Rod','Step Positions',...
-    '6-Degree Polynomial Fit (Start Position)',...
-    '6-Degree Polynomial Fit (First Step Start)')
+legend('Position of Top Rod','Position of Bottom Rod','Step Positions')
 hold off
-
-syms x
-f = (p2(1)*x^5 + p2(2)*x^4 + p2(3)*x^3 + p2(4)*x^2 + p2(5)*x + p2(6));
-velocity = diff(f);
 
 end
 

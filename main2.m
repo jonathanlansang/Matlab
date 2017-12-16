@@ -9,13 +9,14 @@ warning off;
 %% Debugging parameters
 debug=false;
 playMovie = true;
-boxPlotStart = 1;
-boxPlotEnd = 150;
+boxPlotStart = 200;
+boxPlotEnd = 275;
 fps = 60;
 
 %% Initialize Video
-v = uigetdir;
+%v = uigetdir;
  %loadFrames returns uint8 cell array of each frame
+v = 'run5_newLight_gap.mov';
 [frames,numFrames] = loadFrames(v);
 
 %% Conversion Rates
@@ -84,6 +85,12 @@ steps = findSteps(yTrack);
 
 %% Initial Gap Reprocessing
 threshold = getColorValue(frames{floor(numFrames-1)});
+threshold = 0.7*threshold;
+
+topRod = mean(yTrack(1:steps(1,2)));
+bottomRod = mean(yTrack(1:steps(1,2),2));
+
+if abs(topRod-bottomRod)<1
 
 firstMove = steps(1,1);
 topRodStart = mean(yTrack(1:firstMove,1));
@@ -96,7 +103,7 @@ if abs(topRodStart-bottomRodStart)<1
 end
 
 yTrack(1:steps(1,2),1) = median(topRodStart);
-
+end
 %% Displaying Boundary Box
 if debug==true
     [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd,fps,playMovie); 
