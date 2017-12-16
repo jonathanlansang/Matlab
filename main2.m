@@ -7,23 +7,15 @@ close all;
 warning off;
 
 %% Debugging parameters
-debug=true;
+debug=false;
 playMovie = true;
-<<<<<<< HEAD
-boxPlotStart = 200;
-boxPlotEnd = 275;
-=======
+
 boxPlotStart = 220;
 boxPlotEnd = 221;
->>>>>>> 580dad127f50a3ed62a0563603f7ab95156fdc16
 fps = 60;
 
 %% Initialize Video
 %v = uigetdir;
-<<<<<<< HEAD
-=======
-v = 'run5_newLight_gap.mov';
->>>>>>> 580dad127f50a3ed62a0563603f7ab95156fdc16
  %loadFrames returns uint8 cell array of each frame
 v = 'run5_newLight_gap.mov';
 [frames,numFrames] = loadFrames(v);
@@ -95,41 +87,17 @@ yTrack = smoothY(yTrack);
 steps = findSteps(yTrack);
 
 %% Initial Gap Reprocessing
-threshold = getColorValue(frames{floor(numFrames-1)});
+threshold = getColorValue(frames{floor(numFrames-1)},yTrack(floor(numFrames-1),:));
 threshold = 0.7*threshold;
 
 topRod = mean(yTrack(1:steps(1,2)));
 bottomRod = mean(yTrack(1:steps(1,2),2));
 
 if abs(topRod-bottomRod)<1
-
-<<<<<<< HEAD
-firstMove = steps(1,1);
-topRodStart = mean(yTrack(1:firstMove,1));
-bottomRodStart = mean(yTrack(1:firstMove),2);
-
-if abs(topRodStart-bottomRodStart)<1
-    for i = 1:steps(1,1)
-        [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
-    end
+    [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
+    yTrack(1:steps(1,2),1) = median(topRodStart);
 end
 
-yTrack(1:steps(1,2),1) = median(topRodStart);
-end
-=======
-% firstMove = steps(1,1);
-% topRodStart = mean(yTrack(1:firstMove,1));
-% bottomRodStart = mean(yTrack(1:firstMove),2);
-% 
-% if abs(topRodStart-bottomRodStart)<1
-%     for i = 1:steps(1,1)
-%         [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
-%     end
-% end
-% 
-% yTrack(1:steps(1,2),1) = median(topRodStart);
-
->>>>>>> 580dad127f50a3ed62a0563603f7ab95156fdc16
 %% Displaying Boundary Box
 if debug==true
     [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd,fps,playMovie); 
