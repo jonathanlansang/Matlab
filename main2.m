@@ -17,7 +17,7 @@ fps = 60;
 %% Initialize Video
 %v = uigetdir;
  %loadFrames returns uint8 cell array of each frame
-v = 'run5_newLight_gap.mov';
+v = 'run4.mp4';
 [frames,numFrames] = loadFrames(v);
 
 %% Conversion Rates
@@ -31,7 +31,6 @@ viscosity = 8.9e-4; %[Pa s] for const. visc. water
 
 %% Tracking parameters
 minLength = 5;
-sensitivity = 25;
 yTrack = zeros(numFrames,2);
 xTrack = zeros(numFrames,2);
 checkArea = {zeros(1,numFrames)};
@@ -87,17 +86,20 @@ yTrack = smoothY(yTrack);
 steps = findSteps(yTrack);
 
 %% Initial Gap Reprocessing
-threshold = getColorValue(frames{floor(numFrames-1)},yTrack(floor(numFrames-1),:));
-threshold = 0.7*threshold;
+threshold = 270 - getColorValue(frames{floor(numFrames-1)},yTrack(floor(numFrames-1),:));
 
-topRod = mean(yTrack(1:steps(1,2)));
-bottomRod = mean(yTrack(1:steps(1,2),2));
+firstMove = steps(1,2);
 
-if abs(topRod-bottomRod)<1
+topRod = median(yTrack(1:firstMove));
+bottomRod = median(yTrack(1:firstMove,2));
+
+if abs(topRod-bottomRod)<1 || abs(topRod-bottomRod)>10
+    for i = 1:firstMove
     [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
+    end
     yTrack(1:steps(1,2),1) = median(topRodStart);
+    steps = findSteps(yTrack);
 end
-
 %% Displaying Boundary Box
 if debug==true
     [frames_box] = boundaryBoxHelper(yTrack,xBound,frames,boxPlotStart,boxPlotEnd,fps,playMovie); 
