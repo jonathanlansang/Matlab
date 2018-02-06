@@ -58,7 +58,6 @@ end
 %% Filtering Cropped Images
 % THIS SECTION REMOVES THE RODS AND DISPLAYS ONLY THE REMAINING CENTROIDS
 
-image_filled = (image_filled);
 for i = 1:xRange
     for j = 1 : topRodY(i)
         image_filled(j,i) = false;

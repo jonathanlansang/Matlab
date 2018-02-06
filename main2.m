@@ -55,8 +55,6 @@ image = frames{i};
 image_edge = edge(rgb2gray(image),'prewitt');
 image_filled = imfill(image_edge,'holes');
 
-% image_filled = filterImage(image,2);
-
 [xmin,xmax,ymin,ymax] = findEdges(image_filled,minLength);
 
 yTrack(i,1) = ymin; %position of top rod
@@ -125,7 +123,7 @@ for i = 1: numFrames
     bubbleFrames{i} = bubbleImage;
     rawBubbleFrames{i} = rawBubbleImage;
     % TODO: find area and frequency of bubbles (POST-PROCESSING)
-    [centroid,perimeter,majorAxisLength] = bubbleProcess(bubbleImage,rawBubbleImage);
+    [centroid,perimeter,majorAxisLength] = bubbleProcess(bubbleImage);
     centroidLocations{i} = centroid;
     perimeters{i} = perimeter;
     majorAxisLengths{i} = majorAxisLength;

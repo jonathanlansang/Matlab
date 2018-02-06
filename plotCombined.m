@@ -29,7 +29,7 @@ ylabel('Number of Pixels')
 legend('Position of Top Rod','Position of Bottom Rod','Step Positions',...
     [num2str(polyFitOrder) '-Degree Polynomial Fit (First Step Start)'],...
     'Location', 'southwest')
-xlim([0 1400]);
+xlim([0 numFrames]);
 hold off
 
 subplot(5,1,2);
@@ -39,7 +39,7 @@ plot(velocityPoly(startPolyPlot:endPolyPlot,1),...
 hLine = refline(0,0); hLine.Color = 'k';
 set(get(get(hLine,'Annotation'),'LegendInformation'),...
     'IconDisplayStyle','off')
-xlim([0 1400]);
+xlim([0 numFrames]);
 
 ylabel('Velocity [m/s]');
 legend('Velocity of Top Rod', 'Location', 'northwest');
@@ -52,7 +52,7 @@ plot(accelerationPoly(startPolyPlot:endPolyPlot,1),...
 hLine = refline(0,0); hLine.Color = 'k';
 set(get(get(hLine,'Annotation'),'LegendInformation'),...
     'IconDisplayStyle','off')
-xlim([0 1400]);
+xlim([0 numFrames]);
 
 ylabel('Acceleration [m/s^2]');
 legend('Acceleration of Top Rod', 'Location', 'northwest');
@@ -67,7 +67,8 @@ plot(relPressureKuzma(startPolyPlot:endPolyPlot,1),...
 hLine = refline(0,0); hLine.Color = 'k';
 set(get(get(hLine,'Annotation'),'LegendInformation'),...
     'IconDisplayStyle','off')
-xlim([0 1400]); ylim([-8e4 6e4]);
+xlim([0 numFrames]); 
+% ylim([-8e4 6e4]);
 
 ylabel('Relative Pressure [Pa]');
 legend('Relative Pressure Change Leider',...
@@ -81,7 +82,8 @@ plot(reynoldsNumber(startPolyPlot:endPolyPlot,1),...
     reynoldsNumber(startPolyPlot:endPolyPlot,2), 'LineWidth', 2);
 hLine = refline(0,100); hLine.Color = 'k';
 set(gca, 'YScale', 'log')
-xlim([0 1400]); ylim([0 1e4]);
+xlim([0 numFrames]); 
+% ylim([0 1e4]);
 
 
 ylabel('Reynolds Number [-]');

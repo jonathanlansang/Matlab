@@ -1,4 +1,4 @@
-function [centroids,perimeters,majorAxisLength] = bubbleProcess( bubbleImage,rawBubbleImage )
+function [centroids,perimeters,majorAxisLength] = bubbleProcess( bubbleImage )
 %BUBBLEPROCESS FINDS CENTROIDS GIVEN BUBBLE IMAGES 
 %   finds centroids in image where all bubbles are filled in
 %   computes perimeter and area of centroids based on unfilled image
