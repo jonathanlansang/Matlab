@@ -35,11 +35,15 @@ yTrack = zeros(numFrames,2);
 xTrack = zeros(numFrames,2);
 checkArea = {zeros(1,numFrames)};
 
-%% Pre-processing parameters 
+%% Pre-processing Parameters 
 smoothVel = true;
 hasInfoBar = false;
 acqRes = [384,128];
 hasBubbles = true;
+
+%% Post-Processing Parameters
+numBoxes = 20;
+axis = 'x';
 
 %% Cropping Information Bar
 if hasInfoBar == true
@@ -140,7 +144,10 @@ for i = 1 : numFrames
         k = k + 1;
     end
 end
-timeBetweenBubbles = diff(framesWithBubble);
+vFraction = {};
+for n = 1:numFrames
+    vFraction{n} = voidFraction(bubbleFrames{n},numBoxes,axis);
+end
 toc
 end
 
