@@ -42,7 +42,7 @@ acqRes = [384,128];
 hasBubbles = true;
 
 %% Post-Processing Parameters
-numBoxes = 20;
+numBoxes = 5;
 axis = 'x';
 
 %% Cropping Information Bar
@@ -148,6 +148,7 @@ vFraction = {};
 for n = 1:numFrames
     vFraction{n} = voidFraction(bubbleFrames{n},numBoxes,axis);
 end
+plotVFraction(vFraction);
 toc
 end
 
