@@ -97,7 +97,9 @@ bottomRod = median(yTrack(1:firstMove,2));
 
 if abs(topRod-bottomRod)<1 || abs(topRod-bottomRod)>10
     for i = 1:firstMove
-    [topRodStart(i),bottomRodStart(i)] = findEdges2(frames{i},threshold);
+    [topRodStart2,bottomRodStart2] = findEdges2(frames{i},threshold);
+    topRodStart(i) = median(topRodStart2);
+    bottomRodStart(i) = median(bottomRodStart2);
     end
     yTrack(1:steps(1,2),1) = median(topRodStart);
     steps = findSteps(yTrack);
@@ -148,9 +150,25 @@ vFraction = {};
 for n = 1:numFrames
     vFraction{n} = voidFraction(bubbleFrames{n},numBoxes,axis);
 end
-plotVFraction(vFraction);
 toc
 end
+%% 2/15 Meeting Notes
+tic
+for i = 1:numFrames
+    [topRodxs,bottomRodxs] = findEdges2(frames{i},threshold);
+    t{i} = topRodxs;
+    b{i} = bottomRodxs;
+end
+figure()
+hold on
+for i = 1:length(t{1})
+    for j = 1:numFrames
+        holder(j) = t{j}(i);
+    end
+    plot(1:numFrames,holder)
+end
+hold off
+toc
 
 %% Velocity, pressure and acceleration calculation
 interpolationOverlap = 90;
@@ -166,9 +184,10 @@ relPressureKuzma = relPressureKuzma(displacementPoly, velocityPoly, acceleration
 
 reynoldsNumber = reynoldsNumber(displacementPoly, velocityPoly, density, viscosity, sizePx, bottomRodPos);
 %% Plotting
-% plotDisplacement(numFrames,yTrack,steps,interpolationOverlap, polyFitOrder)
+
+plotVFraction(vFraction);
+plotDisplacement(numFrames,yTrack,steps,interpolationOverlap,polyFitOrder);
 % plotVelocity(velocity, velocityPoly, steps, interpolationOverlap)
 % plotAcceleration(acceleration, accelerationPoly, steps, interpolationOverlap)
 % plotPressure(relPressureLeider, relPressureLeiderPolyFit, relPressureKuzma, steps, interpolationOverlap)
-
-plotCombined(numFrames, yTrack, steps, velocityPoly, accelerationPoly, reynoldsNumber, relPressureLeiderPolyFit, relPressureKuzma, interpolationOverlap, polyFitOrder);
+% plotCombined(numFrames, yTrack, steps, velocityPoly, accelerationPoly, reynoldsNumber, relPressureLeiderPolyFit, relPressureKuzma, interpolationOverlap, polyFitOrder);

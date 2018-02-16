@@ -2,7 +2,7 @@ function plotDisplacement(numFrames, yTrack, steps, overlap, order)
 %PLOTDISPLACEMENT plot position of top and bottom rod as well as steps of
 %the top rod
 %   Detailed explanation goes here
-figure();
+% figure();
 space = 1:numFrames;
 space2 = steps(1,2)-overlap:numFrames;
 p1 = polyfit(transpose(space),yTrack(:,1),order);
@@ -29,9 +29,7 @@ legend('Position of Top Rod','Position of Bottom Rod','Step Positions',...
     [num2str(order) '-Degree Polynomial Fit (First Step Start)'])
 hold off
 
-%syms x
-%f = (p2(1)*x^5 + p2(2)*x^4 + p2(3)*x^3 + p2(4)*x^2 + p2(5)*x + p2(6));
-%velocity = diff(f);
+
 
 end
 

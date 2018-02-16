@@ -17,8 +17,7 @@ for i = 1:numPlots
     hold off
 end
 
-figure()
-
+figure
 for k = 1:elements
    summ(k) = sum(vFraction{k}(:)); 
 end
